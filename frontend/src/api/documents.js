@@ -9,16 +9,8 @@ export const analyzeDocument = async (file) => {
   const response = await axios.post(`${API_BASE}/documents/analyze`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data'
-    }
-  });
-  
-  return response.data;
-};
-
-export const getChatResponse = async (question, documentId) => {
-  const response = await axios.post(`${API_BASE}/documents/chat`, {
-    question,
-    documentId
+    },
+    timeout: 30000 // 30 second timeout for large files
   });
   
   return response.data;

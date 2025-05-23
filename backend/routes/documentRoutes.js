@@ -1,19 +1,9 @@
-// const express = require('express');
-// const { analyzeDocument, getChatResponse } = require('../controllers/documentController');
-// const upload = require('../middleware/upload');
-// const auth = require('../middleware/auth');
+console.log('=== DOCUMENT ROUTES FILE LOADED ==='); // Debug line
 
-// const router = express.Router();
-
-// router.post('/analyze', upload.single('pdf'), analyzeDocument);
-// router.post('/chat', auth, getChatResponse);
-
-// module.exports = router;
-
-// Updated Code:
 const express = require('express');
 const multer = require('multer');
-const router = express.Router();
+const { analyzeDocument } = require('../controllers/documentController');
+const router = express.Router(); // ONLY ONE router declaration
 
 // Configure multer for file uploads
 const upload = multer({
@@ -30,34 +20,13 @@ const upload = multer({
     }
 });
 
-// Basic test route
+// Test route
 router.get('/test', (req, res) => {
     res.json({ message: 'Document routes working' });
 });
 
-// PDF upload route (we'll implement the actual analysis later)
-router.post('/analyze', upload.single('pdf'), (req, res) => {
-    try {
-        if (!req.file) {
-            return res.status(400).json({
-                success: false,
-                message: 'No PDF file uploaded'
-            });
-        }
-
-        // For now, just return success
-        res.json({
-            success: true,
-            filename: req.file.originalname,
-            message: 'PDF uploaded successfully - analysis coming soon!'
-        });
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
-});
+// Analyze route
+router.post('/analyze', upload.single('pdf'), analyzeDocument);
 
 module.exports = router;
 

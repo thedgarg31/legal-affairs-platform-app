@@ -1,7 +1,6 @@
-const pdfAnalyzer = require('../services/pdfAnalyzer');
-const Document = require('../models/Document');
-
 const analyzeDocument = async (req, res) => {
+  console.log('=== ANALYZE ROUTE HIT ==='); // You should see this in backend terminal
+  
   try {
     if (!req.file) {
       return res.status(400).json({
@@ -10,52 +9,39 @@ const analyzeDocument = async (req, res) => {
       });
     }
 
-    const analysis = await pdfAnalyzer.analyzePDF(req.file.buffer);
+    console.log('File received:', req.file.originalname);
     
-    // Save document analysis to database
-    const document = new Document({
-      userId: req.user?.id,
-      filename: req.file.originalname,
-      analysis: analysis,
-      uploadDate: new Date()
-    });
-    
-    await document.save();
-    
+    // Simple test response for now
     res.json({
       success: true,
-      documentId: document._id,
       filename: req.file.originalname,
-      analysis: analysis
+      fileSize: req.file.size,
+      analysis: {
+        success: true,
+        totalSentences: 2,
+        analyzedText: [
+          {
+            id: 0,
+            text: "Test sentence with liability risk.",
+            riskLevel: 'high',
+            highlightColor: 'red',
+            explanation: 'Risk detected: liability',
+            keywords: ['liability'],
+            riskScore: 10
+          }
+        ],
+        riskSummary: {
+          totalRiskSentences: 1,
+          totalSentences: 2,
+          riskPercentage: 50,
+          overallRiskLevel: 'HIGH'
+        }
+      },
+      timestamp: new Date().toISOString()
     });
+    
   } catch (error) {
-    console.error('Document analysis error:', error);
-    res.status(500).json({
-      success: false,
-      message: error.message
-    });
-  }
-};
-
-const getChatResponse = async (req, res) => {
-  try {
-    const { question, documentId } = req.body;
-    
-    const document = await Document.findById(documentId);
-    if (!document) {
-      return res.status(404).json({
-        success: false,
-        message: 'Document not found'
-      });
-    }
-    
-    const response = await pdfAnalyzer.getChatResponse(question, document.analysis.analyzedText);
-    
-    res.json({
-      success: true,
-      response: response
-    });
-  } catch (error) {
+    console.error('Error:', error);
     res.status(500).json({
       success: false,
       message: error.message
@@ -64,6 +50,6 @@ const getChatResponse = async (req, res) => {
 };
 
 module.exports = {
-  analyzeDocument,
-  getChatResponse
+  analyzeDocument
 };
+
