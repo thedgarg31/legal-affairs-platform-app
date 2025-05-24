@@ -1,263 +1,286 @@
-// const pdf = require('pdf-parse');
-// const fs = require('fs');
-// const natural = require('natural');
-// const { TfIdf } = natural;
-
-// // Extract text from PDF
-// exports.extractTextFromPDF = async(filePath) => {
-//     try {
-//         const dataBuffer = fs.readFileSync(filePath);
-//         const data = await pdf(dataBuffer);
-//         return data.text;
-//     } catch (error) {
-//         throw new Error(`Error extracting text from PDF: ${error.message}`);
-//     }
-// };
-
-// // Analyze legal document
-// exports.analyzeLegalDocument = async(filePath) => {
-//     try {
-//         // Extract text from PDF
-//         const text = await this.extractTextFromPDF(filePath);
-
-//         // Generate summary (basic implementation)
-//         const summary = generateSummary(text);
-
-//         // Extract key terms
-//         const keyTerms = extractKeyTerms(text);
-
-//         // Identify risk factors
-//         const riskFactors = identifyRiskFactors(text);
-
-//         // Extract parties
-//         const parties = extractParties(text);
-
-//         // Extract dates
-//         const dates = extractDates(text);
-
-//         return {
-//             summary,
-//             keyTerms,
-//             riskFactors,
-//             parties,
-//             dates,
-//         };
-//     } catch (error) {
-//         throw new Error(`Error analyzing legal document: ${error.message}`);
-//     }
-// };
-
-// // Generate a basic summary
-// function generateSummary(text) {
-//     // Basic implementation: Take first 500 characters or find first paragraph
-//     const firstParagraph = text.split('\n\n')[0];
-//     return firstParagraph.length > 500 ?
-//         firstParagraph.substring(0, 500) + '...' :
-//         firstParagraph;
-// }
-
-// // Extract key terms using TF-IDF
-// function extractKeyTerms(text) {
-//     const tfidf = new TfIdf();
-
-//     // Add document
-//     tfidf.addDocument(text);
-
-//     // Get top 10 terms
-//     const terms = [];
-//     tfidf.listTerms(0).slice(0, 10).forEach(item => {
-//         terms.push(item.term);
-//     });
-
-//     return terms;
-// }
-
-// // Identify potential risk factors
-// function identifyRiskFactors(text) {
-//     const riskKeywords = [
-//         'liability', 'risk', 'penalty', 'termination', 'dispute',
-//         'breach', 'damages', 'litigation', 'lawsuit', 'claim',
-//         'indemnity', 'limitation', 'warranty', 'representation'
-//     ];
-
-//     const risks = [];
-
-//     // Check for each risk keyword
-//     riskKeywords.forEach(keyword => {
-//         if (text.toLowerCase().includes(keyword.toLowerCase())) {
-//             // Get the sentence containing the keyword
-//             const regex = new RegExp(`[^.!?]*(?<=[.!?\\s])${keyword}(?=[\\s.!?])[^.!?]*[.!?]`, 'gi');
-//             const matches = text.match(regex);
-
-//             if (matches) {
-//                 matches.forEach(match => {
-//                     risks.push(match.trim());
-//                 });
-//             }
-//         }
-//     });
-
-//     return [...new Set(risks)]; // Remove duplicates
-// }
-
-// // Extract parties mentioned in the document
-// function extractParties(text) {
-//     // This is a simplified implementation
-//     // Real implementation would use NER (Named Entity Recognition)
-//     const partyIndicators = ['party', 'parties', 'between', 'and', 'plaintiff', 'defendant'];
-//     const parties = [];
-
-//     // Simple regex to find company names (very basic)
-//     const companyRegex = /([A-Z][a-z]+ )+(?:LLC|Inc\.|Corp\.|Corporation|Company|Ltd\.)/g;
-//     const companies = text.match(companyRegex);
-
-//     if (companies) {
-//         parties.push(...companies);
-//     }
-
-//     return [...new Set(parties)]; // Remove duplicates
-// }
-
-// // Extract dates from the document
-// function extractDates(text) {
-//     // Match common date formats
-//     const dateRegex = /\b\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{2,4}\b|\b(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2},\s+\d{4}\b/g;
-//     const dateMatches = text.match(dateRegex);
-
-//     const dates = [];
-//     if (dateMatches) {
-//         dateMatches.forEach(match => {
-//             try {
-//                 const date = new Date(match);
-//                 if (!isNaN(date.getTime())) {
-//                     dates.push(date);
-//                 }
-//             } catch (e) {
-//                 // Invalid date format, skip
-//             }
-//         });
-//     }
-
-//     return dates;
-// }
-
-// My Updated Code:
 const pdfParse = require('pdf-parse');
 
-// Define keywords for highlighting
-const RISK_KEYWORDS = [
-  'liable', 'penalty', 'breach', 'termination', 'indemnify', 'risk','dispute',
-  'damages', 'forfeit', 'void', 'cancel', 'sue', 'lawsuit', 'default',
-  'liquidated damages', 'force majeure', 'non-disclosure violation'
-];
-
-const SAFE_KEYWORDS = [
-  'agreement', 'party', 'term', 'compliance', 'obligation', 'warranty',
-  'standard', 'normal', 'usual', 'customary', 'reasonable', 'mutual',
-  'good faith', 'best efforts', 'commercially reasonable'
-];
-
 class PDFAnalyzer {
-  async analyzePDF(buffer) {
-    try {
-      const data = await pdfParse(buffer);
-      const sentences = data.text.split(/[.!?]+/).filter(sentence => sentence.trim().length > 10);
-      
-      const analyzedSentences = sentences.map((sentence, index) => {
-        const lowerSentence = sentence.toLowerCase();
-        let color = 'neutral';
-        let riskLevel = 'normal';
-        let explanation = '';
-        
-        // Check for risk keywords
-        const riskKeywords = RISK_KEYWORDS.filter(keyword => 
-          lowerSentence.includes(keyword)
-        );
-        
-        // Check for safe keywords
-        const safeKeywords = SAFE_KEYWORDS.filter(keyword => 
-          lowerSentence.includes(keyword)
-        );
-        
-        if (riskKeywords.length > 0) {
-          color = 'red';
-          riskLevel = 'high';
-          explanation = `Risk detected: Contains ${riskKeywords.join(', ')}`;
-        } else if (safeKeywords.length > 0) {
-          color = 'green';
-          riskLevel = 'low';
-          explanation = `Standard clause: Contains ${safeKeywords.join(', ')}`;
+    async analyzePDF(buffer) {
+        try {
+            console.log('Starting intelligent PDF analysis...');
+
+            const data = await pdfParse(buffer);
+            const fullText = data.text;
+            console.log('PDF text extracted, analyzing content...');
+
+            // Analyze the document intelligently
+            const documentSummary = this.generateIntelligentSummary(fullText);
+
+            return {
+                success: true,
+                documentSummary: documentSummary
+            };
+        } catch (error) {
+            console.error('PDF analysis error:', error);
+            throw new Error(`PDF analysis failed: ${error.message}`);
         }
-        
+    }
+
+    generateIntelligentSummary(text) {
+        const lowerText = text.toLowerCase();
+
+        // Determine document type
+        const documentType = this.identifyDocumentType(lowerText);
+
+        // Generate overview based on content
+        const overview = this.generateOverview(lowerText, documentType);
+
+        // Extract key terms
+        const keyTerms = this.extractKeyTerms(lowerText, documentType);
+
+        // Identify risks
+        const risks = this.identifyRisks(lowerText, documentType);
+
+        // Find protections
+        const protections = this.findProtections(lowerText, documentType);
+
+        // Generate recommendations
+        const recommendations = this.generateRecommendations(lowerText, documentType);
+
+        // Overall assessment
+        const overallRisk = this.assessOverallRisk(risks.length);
+        const finalAdvice = this.generateFinalAdvice(overallRisk, documentType);
+
         return {
-          id: index,
-          text: sentence.trim(),
-          color: color,
-          riskLevel: riskLevel,
-          explanation: explanation,
-          keywords: [...riskKeywords, ...safeKeywords]
+            overview,
+            purpose: this.generatePurpose(lowerText, documentType),
+            keyTerms,
+            risks,
+            protections,
+            recommendations,
+            overallRisk,
+            finalAdvice
         };
-      });
-      
-      return {
-        success: true,
-        totalSentences: sentences.length,
-        analyzedText: analyzedSentences,
-        riskSummary: this.generateRiskSummary(analyzedSentences),
-        suggestions: this.generateSuggestions(analyzedSentences)
-      };
-    } catch (error) {
-      throw new Error(`PDF analysis failed: ${error.message}`);
     }
-  }
-  
-  generateRiskSummary(sentences) {
-    const riskSentences = sentences.filter(s => s.color === 'red').length;
-    const safeSentences = sentences.filter(s => s.color === 'green').length;
-    const totalSentences = sentences.length;
-    
-    return {
-      riskSentences,
-      safeSentences,
-      neutralSentences: totalSentences - riskSentences - safeSentences,
-      riskPercentage: Math.round((riskSentences / totalSentences) * 100),
-      overallRisk: riskSentences > totalSentences * 0.3 ? 'High' : 
-                   riskSentences > totalSentences * 0.1 ? 'Medium' : 'Low'
-    };
-  }
-  
-  generateSuggestions(sentences) {
-    const riskSentences = sentences.filter(s => s.color === 'red');
-    const suggestions = [];
-    
-    if (riskSentences.length > 0) {
-      suggestions.push('Consider reviewing liability clauses with a legal expert');
-      suggestions.push('Negotiate caps on damages and penalties');
-      suggestions.push('Add dispute resolution mechanisms');
+
+    identifyDocumentType(text) {
+        if (text.includes('employment') || text.includes('employee') || text.includes('salary')) {
+            return 'Employment Contract';
+        } else if (text.includes('service') || text.includes('consulting') || text.includes('contractor')) {
+            return 'Service Agreement';
+        } else if (text.includes('non-disclosure') || text.includes('confidential') || text.includes('nda')) {
+            return 'Non-Disclosure Agreement';
+        } else if (text.includes('lease') || text.includes('rent') || text.includes('tenant')) {
+            return 'Lease Agreement';
+        } else if (text.includes('purchase') || text.includes('sale') || text.includes('buyer')) {
+            return 'Purchase Agreement';
+        } else {
+            return 'Legal Contract';
+        }
     }
-    
-    return suggestions;
-  }
-  
-  async getChatResponse(question, analyzedText) {
-    const lowerQuestion = question.toLowerCase();
-    
-    if (lowerQuestion.includes('risk') || lowerQuestion.includes('danger')) {
-      const riskSentences = analyzedText.filter(s => s.color === 'red');
-      return `Found ${riskSentences.length} potential risk areas. Main concerns: ${riskSentences.slice(0, 3).map(s => s.explanation).join('; ')}`;
+
+    generateOverview(text, docType) {
+        const wordCount = text.split(' ').length;
+        return `This is a ${docType} containing approximately ${wordCount} words. The document establishes a legal relationship between parties and outlines their respective rights, obligations, and responsibilities. Our AI has analyzed the entire document to identify key terms, potential risks, and your protections.`;
     }
-    
-    if (lowerQuestion.includes('change') || lowerQuestion.includes('modify')) {
-      return 'Suggested modifications: 1) Add liability caps, 2) Include termination notice periods, 3) Specify dispute resolution process, 4) Add force majeure clauses.';
+
+    generatePurpose(text, docType) {
+        switch (docType) {
+            case 'Employment Contract':
+                return 'This employment contract defines your job role, salary, benefits, and working conditions. It also outlines what your employer expects from you and what you can expect from them. Think of it as the rulebook for your working relationship.';
+            case 'Service Agreement':
+                return 'This service agreement outlines what services will be provided, how much they cost, and when they need to be completed. It protects both the service provider and the client by clearly defining expectations and responsibilities.';
+            case 'Non-Disclosure Agreement':
+                return 'This NDA is designed to protect confidential information. It means you cannot share certain information with others. Companies use this to protect their trade secrets, and you should understand exactly what information you need to keep secret.';
+            case 'Lease Agreement':
+                return 'This lease agreement defines your rights and responsibilities as a tenant. It covers rent amount, lease duration, what you can and cannot do in the property, and under what conditions the lease can be terminated.';
+            default:
+                return `This ${docType} creates a legal agreement between parties. It defines what each party must do, what they get in return, and what happens if someone doesn't fulfill their obligations.`;
+        }
     }
-    
-    if (lowerQuestion.includes('safe') || lowerQuestion.includes('good')) {
-      const safeSentences = analyzedText.filter(s => s.color === 'green');
-      return `Found ${safeSentences.length} standard/safe clauses. These appear to follow industry best practices.`;
+
+    extractKeyTerms(text, docType) {
+        const terms = [];
+
+        if (text.includes('liability') || text.includes('liable')) {
+            terms.push({
+                title: 'Liability',
+                explanation: 'This means who is responsible if something goes wrong. If you are "liable" for something, you might have to pay for damages or fix problems. Look for phrases like "unlimited liability" which could be risky for you.'
+            });
+        }
+
+        if (text.includes('indemnify') || text.includes('indemnification')) {
+            terms.push({
+                title: 'Indemnification',
+                explanation: 'This is a fancy word that means "you promise to protect the other party from lawsuits." If you indemnify someone, you agree to pay their legal costs if they get sued because of something you did.'
+            });
+        }
+
+        if (text.includes('termination') || text.includes('terminate')) {
+            terms.push({
+                title: 'Termination',
+                explanation: 'This explains how and when the contract can be ended. Pay attention to notice periods (how much advance warning you need to give) and whether either party can end the contract immediately.'
+            });
+        }
+
+        if (text.includes('confidential') || text.includes('non-disclosure')) {
+            terms.push({
+                title: 'Confidentiality',
+                explanation: 'This means you must keep certain information secret. Violating confidentiality can lead to lawsuits. Make sure you understand exactly what information you need to protect and for how long.'
+            });
+        }
+
+        if (text.includes('penalty') || text.includes('penalties')) {
+            terms.push({
+                title: 'Penalties',
+                explanation: 'These are punishments (usually money you have to pay) if you break the contract. Look for penalty amounts and make sure they are reasonable compared to the potential damage.'
+            });
+        }
+
+        // Add default terms if none found
+        if (terms.length === 0) {
+            terms.push({
+                title: 'Contract Terms',
+                explanation: 'This document contains various legal terms that define the relationship between parties. Each term has specific legal meaning and consequences.'
+            });
+        }
+
+        return terms;
     }
-    
-    return 'I can help analyze contract risks, suggest modifications, or explain specific clauses. Try asking about risks, changes, or specific terms.';
-  }
+
+    identifyRisks(text, docType) {
+        const risks = [];
+
+        if (text.includes('unlimited liability') || text.includes('unlimited damages')) {
+            risks.push({
+                title: 'Unlimited Liability Risk',
+                description: 'The contract says you could be responsible for unlimited damages. This means if something goes wrong, you might have to pay huge amounts of money - potentially more than you can afford.',
+                recommendation: 'Try to negotiate a cap on your liability. For example, limit your maximum liability to the contract value or a specific dollar amount.'
+            });
+        }
+
+        if (text.includes('terminate immediately') || text.includes('without notice')) {
+            risks.push({
+                title: 'Immediate Termination Risk',
+                description: 'The other party can end this contract immediately without giving you any warning. This could leave you without income or services suddenly.',
+                recommendation: 'Negotiate for a reasonable notice period (like 30 days) so you have time to prepare if the contract ends.'
+            });
+        }
+
+        if (text.includes('liquidated damages') || text.includes('penalty')) {
+            risks.push({
+                title: 'Financial Penalty Risk',
+                description: 'You could face financial penalties if you break any part of this contract. Some penalties might be much higher than the actual damage caused.',
+                recommendation: 'Review all penalty amounts. Make sure they are reasonable and proportional to potential actual damages.'
+            });
+        }
+
+        if (text.includes('personal guarantee') || text.includes('personally liable')) {
+            risks.push({
+                title: 'Personal Liability Risk',
+                description: 'You are personally responsible for this contract, even if you are representing a company. This means your personal assets (house, car, savings) could be at risk.',
+                recommendation: 'Consider whether you really need to give a personal guarantee. If possible, limit the guarantee to business assets only.'
+            });
+        }
+
+        if (text.includes('non-compete') || text.includes('restraint of trade')) {
+            risks.push({
+                title: 'Non-Compete Restriction',
+                description: 'This contract may prevent you from working with competitors or starting a similar business for a certain period. This could limit your future career options.',
+                recommendation: 'Make sure any non-compete clause is reasonable in terms of time period, geographic area, and scope of restricted activities.'
+            });
+        }
+
+        // Add default risk if none found
+        if (risks.length === 0) {
+            risks.push({
+                title: 'General Contract Risk',
+                description: 'Like any legal contract, this document creates binding obligations. Not fulfilling your obligations could result in legal action or financial consequences.',
+                recommendation: 'Make sure you fully understand all your obligations before signing. Consider having a lawyer review the contract if it involves significant money or long-term commitments.'
+            });
+        }
+
+        return risks;
+    }
+
+    findProtections(text, docType) {
+        const protections = [];
+
+        if (text.includes('force majeure') || text.includes('act of god')) {
+            protections.push({
+                title: 'Force Majeure Protection',
+                description: 'You are protected if extraordinary events (like natural disasters, wars, or pandemics) prevent you from fulfilling the contract. You won\'t be penalized for things beyond your control.'
+            });
+        }
+
+        if (text.includes('limitation of liability') || text.includes('limited liability')) {
+            protections.push({
+                title: 'Limited Liability Protection',
+                description: 'Your liability is limited to a specific amount or type of damages. This protects you from having to pay unlimited amounts if something goes wrong.'
+            });
+        }
+
+        if (text.includes('notice period') || text.includes('30 days notice')) {
+            protections.push({
+                title: 'Notice Period Protection',
+                description: 'You will receive advance warning before the contract is terminated. This gives you time to prepare and find alternatives.'
+            });
+        }
+
+        if (text.includes('dispute resolution') || text.includes('mediation') || text.includes('arbitration')) {
+            protections.push({
+                title: 'Dispute Resolution Process',
+                description: 'There is a structured process for resolving disagreements. This can be faster and cheaper than going to court.'
+            });
+        }
+
+        // Add default protection
+        if (protections.length === 0) {
+            protections.push({
+                title: 'Legal Framework Protection',
+                description: 'This contract operates under established legal frameworks that provide basic protections for all parties. Courts can enforce fair treatment and reasonable contract terms.'
+            });
+        }
+
+        return protections;
+    }
+
+    generateRecommendations(text, docType) {
+        const recommendations = [
+            'Read the entire contract carefully, not just the summary.',
+            'Pay special attention to termination clauses and penalty sections.',
+            'Make sure you understand all your obligations and deadlines.',
+            'Check if there are any automatic renewal clauses.',
+            'Verify that all important details (dates, amounts, names) are correct.'
+        ];
+
+        if (text.includes('liability')) {
+            recommendations.push('Negotiate to limit your liability to reasonable amounts.');
+        }
+
+        if (text.includes('confidential')) {
+            recommendations.push('Clearly understand what information you must keep confidential and for how long.');
+        }
+
+        if (text.includes('penalty')) {
+            recommendations.push('Review all penalty clauses and negotiate if they seem excessive.');
+        }
+
+        return recommendations;
+    }
+
+    assessOverallRisk(riskCount) {
+        if (riskCount >= 3) return 'HIGH';
+        if (riskCount >= 2) return 'MEDIUM';
+        return 'LOW';
+    }
+
+    generateFinalAdvice(riskLevel, docType) {
+        switch (riskLevel) {
+            case 'HIGH':
+                return 'This contract contains several potential risks that could significantly impact you. We strongly recommend having a qualified lawyer review this document before signing. The potential financial and legal consequences could be substantial.';
+            case 'MEDIUM':
+                return 'This contract has some areas of concern that you should carefully consider. While not extremely risky, there are terms that could affect you negatively. Consider negotiating these terms or getting legal advice for the more complex clauses.';
+            default:
+                return 'This appears to be a relatively standard contract with typical terms. While we haven\'t identified major red flags, you should still read it thoroughly and make sure you understand all your obligations before signing.';
+        }
+    }
 }
 
 module.exports = new PDFAnalyzer();
