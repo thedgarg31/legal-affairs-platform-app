@@ -223,11 +223,19 @@ const Home = () => (
   </div>
   <div className="lt-stat">
     <h3>+3M</h3>
-    <p>Analyzed Documenst</p>
+    <p>Analyzed Documents</p>
   </div> 
   <div className="lt-stat">
-    <h3>+20M</h3>
+    <h3>+30M</h3>
     <p>Customers helped</p>
+  </div>
+  <div className="lt-stat">
+    <h3>+10M</h3>
+    <p>Lawyers Registered</p>
+  </div>
+  <div className="lt-stat">
+    <h3>+5</h3>
+    <p>Years of Lawyers Registered</p>
   </div>
 </section>
 
