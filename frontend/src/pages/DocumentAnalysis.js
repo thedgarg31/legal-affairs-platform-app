@@ -1,6 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import * as pdfjsLib from 'pdfjs-dist';
 import { analyzeDocument } from '../api/documents';
-import { highlightRiskText, getRiskStyling } from '../utils/highlighter';
+import { getRiskStyling } from '../utils/highlighter';
+
+// Set up PDF.js worker
+pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js';
 
 const DocumentAnalysis = () => {
   const [analysis, setAnalysis] = useState(null);
@@ -9,6 +13,9 @@ const DocumentAnalysis = () => {
   const [pdfUrl, setPdfUrl] = useState(null);
   const [uploadedFileName, setUploadedFileName] = useState('');
   const [viewMode, setViewMode] = useState('summary');
+  const [pdfDoc, setPdfDoc] = useState(null);
+  const canvasRef = useRef(null);
+  const textLayerRef = useRef(null);
 
   const handleFileUpload = async (file) => {
     if (!file || file.type !== 'application/pdf') {
@@ -35,6 +42,104 @@ const DocumentAnalysis = () => {
       setLoading(false);
     }
   };
+
+  const renderPDFWithHighlights = async () => {
+    if (!pdfUrl || !analysis) return;
+
+    try {
+      const loadingTask = pdfjsLib.getDocument(pdfUrl);
+      const pdf = await loadingTask.promise;
+      setPdfDoc(pdf);
+      
+      // Render first page
+      const page = await pdf.getPage(1);
+      const canvas = canvasRef.current;
+      const context = canvas.getContext('2d');
+      
+      const viewport = page.getViewport({ scale: 1.5 });
+      canvas.height = viewport.height;
+      canvas.width = viewport.width;
+      
+      // Render PDF page
+      await page.render({
+        canvasContext: context,
+        viewport: viewport
+      }).promise;
+      
+      // Get text content for highlighting
+      const textContent = await page.getTextContent();
+      
+      // Create text layer with highlights
+      createHighlightedTextLayer(textContent, viewport);
+      
+    } catch (error) {
+      console.error('Error rendering PDF:', error);
+    }
+  };
+
+  const createHighlightedTextLayer = (textContent, viewport) => {
+    const textLayer = textLayerRef.current;
+    textLayer.innerHTML = ''; // Clear previous content
+    
+    textContent.items.forEach((textItem) => {
+      const textDiv = document.createElement('div');
+      textDiv.textContent = textItem.str;
+      
+      // Position the text
+      const transform = pdfjsLib.Util.transform(
+        viewport.transform,
+        textItem.transform
+      );
+      
+      textDiv.style.position = 'absolute';
+      textDiv.style.left = transform[4] + 'px';
+      textDiv.style.top = (viewport.height - transform[5]) + 'px';
+      textDiv.style.fontSize = Math.abs(transform[0]) + 'px';
+      textDiv.style.fontFamily = textItem.fontName || 'sans-serif';
+      textDiv.style.color = 'transparent'; // Make text transparent
+      textDiv.style.pointerEvents = 'none';
+      
+      // Check if this text contains risk keywords
+      const isRisky = analysis.analyzedText.some(sentence => 
+        sentence.highlightColor === 'red' && 
+        sentence.keywords.some(keyword => 
+          textItem.str.toLowerCase().includes(keyword.toLowerCase())
+        )
+      );
+      
+      if (isRisky) {
+        // Add red highlight for risky text
+        textDiv.style.backgroundColor = 'rgba(244, 67, 54, 0.4)';
+        textDiv.style.border = '2px solid #f44336';
+        textDiv.style.borderRadius = '3px';
+        textDiv.style.cursor = 'help';
+        textDiv.title = '⚠️ Risk detected in this text';
+        
+        // Make risky text visible
+        textDiv.style.color = '#d32f2f';
+        textDiv.style.fontWeight = 'bold';
+        textDiv.style.pointerEvents = 'auto';
+        
+        // Add hover effect
+        textDiv.onmouseenter = () => {
+          textDiv.style.backgroundColor = 'rgba(244, 67, 54, 0.6)';
+          textDiv.style.transform = 'scale(1.05)';
+        };
+        textDiv.onmouseleave = () => {
+          textDiv.style.backgroundColor = 'rgba(244, 67, 54, 0.4)';
+          textDiv.style.transform = 'scale(1)';
+        };
+      }
+      
+      textLayer.appendChild(textDiv);
+    });
+  };
+
+  useEffect(() => {
+    if (viewMode === 'pdf' && pdfUrl && analysis) {
+      renderPDFWithHighlights();
+    }
+  }, [viewMode, pdfUrl, analysis]);
 
   const handleDrag = (e) => {
     e.preventDefault();
@@ -122,7 +227,7 @@ const DocumentAnalysis = () => {
       </div>
 
       {/* View Mode Toggle */}
-      {analysis && pdfUrl && (
+      {analysis && (
         <div style={{ marginBottom: '2rem', textAlign: 'center' }}>
           <div style={{ display: 'inline-flex', backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: '8px', padding: '4px' }}>
             <button
@@ -130,14 +235,14 @@ const DocumentAnalysis = () => {
               className={`btn ${viewMode === 'summary' ? 'btn-primary' : 'btn-secondary'}`}
               style={{ margin: '0 4px', padding: '12px 24px' }}
             >
-              📊 Risk Analysis
+              📊 Risk Summary
             </button>
             <button
               onClick={() => setViewMode('pdf')}
               className={`btn ${viewMode === 'pdf' ? 'btn-primary' : 'btn-secondary'}`}
               style={{ margin: '0 4px', padding: '12px 24px' }}
             >
-              📄 Original PDF
+              📄 PDF with Highlights
             </button>
           </div>
         </div>
@@ -213,62 +318,6 @@ const DocumentAnalysis = () => {
                 </div>
               </div>
 
-              {/* Detailed Risk Analysis */}
-              <div className="card" style={{ marginBottom: '2rem' }}>
-                <h3 className="gradient-text" style={{ fontSize: '1.8rem', marginBottom: '1.5rem' }}>
-                  📋 AI-Powered Risk Analysis with Highlighting
-                </h3>
-                <p style={{ color: '#a0a0a0', marginBottom: '1.5rem' }}>
-                  🔴 Red highlights indicate potentially risky clauses that may be unfavorable to you.
-                </p>
-                
-                <div style={{ 
-                  maxHeight: '600px', 
-                  overflowY: 'auto',
-                  backgroundColor: 'rgba(0,0,0,0.3)',
-                  padding: '1.5rem',
-                  borderRadius: '8px',
-                  border: '1px solid rgba(255,255,255,0.1)'
-                }}>
-                  {analysis.analyzedText.map((sentence) => (
-                    <div
-                      key={sentence.id}
-                      style={{
-                        padding: '12px',
-                        margin: '8px 0',
-                        borderRadius: '6px',
-                        lineHeight: '1.6',
-                        backgroundColor: sentence.highlightColor === 'red' ? 'rgba(244, 67, 54, 0.1)' : 'transparent',
-                        border: sentence.highlightColor === 'red' ? '1px solid rgba(244, 67, 54, 0.3)' : '1px solid transparent',
-                        transition: 'all 0.3s ease'
-                      }}
-                      title={sentence.explanation}
-                    >
-                      {sentence.highlightColor === 'red' ? (
-                        <div>
-                          <div style={{ marginBottom: '8px' }}>
-                            {highlightRiskText(sentence.text, sentence.keywords, 'red')}
-                          </div>
-                          <div style={{ 
-                            fontSize: '0.9rem', 
-                            color: '#f44336', 
-                            fontStyle: 'italic',
-                            backgroundColor: 'rgba(244, 67, 54, 0.1)',
-                            padding: '4px 8px',
-                            borderRadius: '4px',
-                            border: '1px solid rgba(244, 67, 54, 0.2)'
-                          }}>
-                            {sentence.explanation}
-                          </div>
-                        </div>
-                      ) : (
-                        <span style={{ color: '#e0e0e0' }}>{sentence.text}</span>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-
               {/* AI Recommendations */}
               <div className="card">
                 <h3 className="gradient-text" style={{ fontSize: '1.8rem', marginBottom: '1.5rem' }}>
@@ -315,7 +364,7 @@ const DocumentAnalysis = () => {
                   }}>
                     <h4 style={{ color: '#4caf50', marginBottom: '1rem' }}>✅ Next Steps</h4>
                     <ul style={{ color: '#a0a0a0', paddingLeft: '1.5rem', lineHeight: '1.6' }}>
-                      <li>View original PDF for reference</li>
+                      <li>View PDF with highlights for visual review</li>
                       <li>Consult with a qualified attorney</li>
                       <li>Prepare negotiation points for contract revision</li>
                     </ul>
@@ -324,52 +373,72 @@ const DocumentAnalysis = () => {
               </div>
             </>
           ) : (
-            /* Simple PDF Viewer */
+            /* PDF WITH ACTUAL TEXT HIGHLIGHTING */
             <div className="card">
               <h3 className="gradient-text" style={{ fontSize: '1.8rem', marginBottom: '1.5rem' }}>
-                📄 Original PDF Document
+                📄 PDF with AI Risk Highlighting
               </h3>
+              <p style={{ color: '#a0a0a0', marginBottom: '1.5rem', textAlign: 'center' }}>
+                🔴 Red highlights show risky clauses directly on the PDF • Hover for details
+              </p>
               
               <div style={{ 
-                display: 'flex', 
-                justifyContent: 'center',
-                backgroundColor: 'rgba(0,0,0,0.3)',
-                padding: '2rem',
+                position: 'relative',
+                backgroundColor: '#f5f5f5',
                 borderRadius: '8px',
                 border: '1px solid rgba(255,255,255,0.1)',
-                position: 'relative',
-                minHeight: '600px'
+                overflow: 'hidden',
+                maxHeight: '800px',
+                overflowY: 'auto'
               }}>
-                <iframe
-                  src={pdfUrl}
-                  width="100%"
-                  height="600px"
-                  style={{
-                    border: 'none',
-                    borderRadius: '8px',
-                    backgroundColor: 'white'
+                {/* PDF Canvas */}
+                <canvas 
+                  ref={canvasRef}
+                  style={{ 
+                    display: 'block',
+                    maxWidth: '100%',
+                    height: 'auto'
                   }}
-                  title="PDF Document"
                 />
                 
-                {/* Risk Overlay Indicator */}
+                {/* Text Layer with Highlights */}
+                <div 
+                  ref={textLayerRef}
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    pointerEvents: 'none'
+                  }}
+                />
+                
+                {/* Risk Summary Overlay */}
                 <div style={{
                   position: 'absolute',
                   top: '1rem',
                   right: '1rem',
-                  backgroundColor: 'rgba(244, 67, 54, 0.9)',
+                  backgroundColor: 'rgba(244, 67, 54, 0.95)',
                   color: 'white',
-                  padding: '8px 12px',
-                  borderRadius: '6px',
+                  padding: '12px 16px',
+                  borderRadius: '8px',
                   fontSize: '0.9rem',
                   fontWeight: 'bold',
-                  zIndex: 10
+                  zIndex: 10,
+                  boxShadow: '0 4px 15px rgba(244, 67, 54, 0.4)'
                 }}>
-                  🚨 {analysis.riskSummary.totalRiskSentences} Risk Areas Detected
+                  <div style={{ textAlign: 'center' }}>
+                    <div style={{ fontSize: '1.2rem', marginBottom: '4px' }}>🚨</div>
+                    <div>{analysis.riskSummary.totalRiskSentences} Risk Areas</div>
+                    <div style={{ fontSize: '0.8rem', opacity: 0.9 }}>
+                      Highlighted in Red
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              {/* Instructions */}
+              {/* Legend */}
               <div style={{ 
                 marginTop: '1rem',
                 padding: '1rem',
@@ -377,13 +446,10 @@ const DocumentAnalysis = () => {
                 borderRadius: '8px',
                 textAlign: 'center'
               }}>
-                <p style={{ color: '#a0a0a0', marginBottom: '0.5rem' }}>
-                  <strong>💡 Tip:</strong> Switch to "Risk Analysis" view to see detailed highlighting and explanations of risky terms found in this document.
-                </p>
                 <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', flexWrap: 'wrap' }}>
-                  <span style={{ color: '#f44336' }}>🔴 {analysis.riskSummary.totalRiskSentences} High Risk Terms Found</span>
-                  <span style={{ color: '#ff9800' }}>⚠️ {analysis.riskSummary.riskPercentage}% Risk Level</span>
-                  <span style={{ color: '#667eea' }}>📊 {analysis.riskSummary.totalSentences} Total Sentences Analyzed</span>
+                  <span style={{ color: '#f44336' }}>🔴 Risky Clauses ({analysis.riskSummary.totalRiskSentences} found)</span>
+                  <span style={{ color: '#4caf50' }}>🟢 Safe Content</span>
+                  <span style={{ color: '#667eea' }}>💡 Hover red text for explanations</span>
                 </div>
               </div>
             </div>
