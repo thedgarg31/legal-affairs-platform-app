@@ -67,7 +67,7 @@ const Home = () => {
 export default Home;
 */
 import React from "react";
-import "./Home.css"; // See CSS below
+import "./home.css"; // See CSS below
 
 const experts = [
   {
