@@ -349,7 +349,7 @@ const DocumentAnalysis = () => {
                   </h2>
                 </div>
                 <div>
-                  {highlightRiskText(analysis.text, analysis.risks, getRiskStyling)}
+                  {highlightText(analysis.text, analysis.risks, getRiskColor)}
                 </div>
               </div>
             </div>
