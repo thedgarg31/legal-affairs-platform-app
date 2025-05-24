@@ -141,7 +141,7 @@ const Home = () => (
           <h3>Download &amp; Sign</h3>
           <p>Download, print, or e-sign your legal document.</p>
         </div>
-      </div>
+     
     </section>
 
     <section className="lt-section lt-experts">
