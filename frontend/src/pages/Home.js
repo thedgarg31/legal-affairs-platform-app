@@ -110,11 +110,11 @@ const Home = () => (
   <h2 style={{
     fontWeight: 'bold',
     fontSize: '2rem',
-    textAlign: 'centre',
+    textAlign: 'center',
     marginBottom: '0.5rem',
     color: '#3b82f6'
   }}>
-    How It Works
+    How It Works!!!
   </h2>
 <div className="lt-steps" style={{
     display: 'flex',
