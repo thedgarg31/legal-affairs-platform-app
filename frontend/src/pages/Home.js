@@ -182,7 +182,7 @@ const Home = () => (
 
   <section class="stats-section">
   <div class="stats-container">
-    <div class="stat-box">
+    <div class="stat-box highlight">
       <h3>+2</h3>
       <p>Years In Business</p>
     </div>
@@ -202,11 +202,11 @@ const Home = () => (
       <h3>+30M</h3>
       <p>Customers helped</p>
     </div>
-    <div class="stat-box">
+    <div class="stat-box highlight">
       <h3>+10M</h3>
       <p>Lawyers Registered</p>
     </div>
-    <div class="stat-box">
+    <div class="stat-box highlight">
       <h3>+5</h3>
       <p>Years of Lawyers Registered</p>
     </div>
