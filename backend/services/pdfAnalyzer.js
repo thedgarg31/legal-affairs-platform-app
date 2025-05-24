@@ -146,7 +146,7 @@ const pdfParse = require('pdf-parse');
 
 // Define keywords for highlighting
 const RISK_KEYWORDS = [
-  'liable', 'penalty', 'breach', 'termination', 'indemnify', 'risk',
+  'liable', 'penalty', 'breach', 'termination', 'indemnify', 'risk','dispute',
   'damages', 'forfeit', 'void', 'cancel', 'sue', 'lawsuit', 'default',
   'liquidated damages', 'force majeure', 'non-disclosure violation'
 ];
