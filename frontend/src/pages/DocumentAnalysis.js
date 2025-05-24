@@ -11,6 +11,43 @@ const DocumentAnalysis = () => {
   const [viewMode, setViewMode] = useState('analysis');
 
   const handleFileUpload = async (file) => {
+  console.log('=== FILE UPLOAD STARTED ===', file.name); // ADD THIS
+  
+  if (!file || file.type !== 'application/pdf') {
+    alert('Please upload a PDF file only.');
+    return;
+  }
+
+  setLoading(true);
+  setUploadedFileName(file.name);
+  
+  console.log('=== CREATING FILE URL ==='); // ADD THIS
+  const fileUrl = URL.createObjectURL(file);
+  setPdfUrl(fileUrl);
+  
+  try {
+    console.log('=== CALLING ANALYZE DOCUMENT API ==='); // ADD THIS
+    const result = await analyzeDocument(file);
+    console.log('=== API RESULT ===', result); // ADD THIS
+    
+    if (result.success) {
+      console.log('=== SETTING ANALYSIS ===', result.analysis); // ADD THIS
+      setAnalysis(result.analysis);
+      console.log('Analysis completed:', result);
+    } else {
+      console.log('=== API RETURNED SUCCESS FALSE ==='); // ADD THIS
+    }
+  } catch (error) {
+    console.error('=== API ERROR ===', error); // ADD THIS
+    alert('Failed to analyze document. Please try again.');
+  } finally {
+    console.log('=== SETTING LOADING FALSE ==='); // ADD THIS
+    setLoading(false);
+  }
+};
+
+
+ /* const handleFileUpload = async (file) => {
     if (!file || file.type !== 'application/pdf') {
       alert('Please upload a PDF file only.');
       return;
@@ -33,7 +70,7 @@ const DocumentAnalysis = () => {
     } finally {
       setLoading(false);
     }
-  };
+  };*/
 
   const handleDrag = (e) => {
     e.preventDefault();
