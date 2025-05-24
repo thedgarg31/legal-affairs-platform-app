@@ -110,7 +110,7 @@ const Home = () => (
   <h2 style={{
     fontWeight: 'bold',
     fontSize: '2rem',
-    textAlign: 'right',
+    textAlign: 'centre',
     marginBottom: '2rem',
     color: '#3b82f6'
   }}>
