@@ -389,3 +389,24 @@ body {
   transform: translateY(-1px);
   box-shadow: 0 2px 8px rgba(244, 67, 54, 0.3);
 }
+
+
+/* Perfect tooltip hover effect */
+.perfect-tooltip {
+  opacity: 0 !important;
+  transition: opacity 0.3s ease !important;
+}
+
+*:hover > .perfect-tooltip {
+  opacity: 1 !important;
+}
+
+/* Perfect tooltip hover effect */
+.perfect-tooltip {
+  opacity: 0 !important;
+  transition: opacity 0.3s ease !important;
+}
+
+*:hover > .perfect-tooltip {
+  opacity: 1 !important;
+}
