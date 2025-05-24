@@ -96,7 +96,7 @@ const Home = () => (
         Save time, money, and stress—get started in minutes!
       </p>
       <div className="lt-cta-row">
-        <a href="/document-analysis" className="lt-btn lt-btn-primary">Create Document</a>
+        <a href="/document-analysis" className="lt-btn lt-btn-primary">AI Document Analyzer</a>
         <a href="/find-lawyer" className="lt-btn lt-btn-secondary">Talk to a Lawyer</a>
       </div>
     </header>
