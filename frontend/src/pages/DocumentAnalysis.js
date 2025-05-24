@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { analyzeDocument } from '../api/documents';
 import { highlightText, getRiskColor } from '../utils/highlighter';
+  // In your DocumentAnalysis.js file
+import { jsPDF } from "jspdf";
 
 const DocumentAnalysis = () => {
   const [analysis, setAnalysis] = useState(null);
@@ -9,9 +11,6 @@ const DocumentAnalysis = () => {
   const [pdfUrl, setPdfUrl] = useState(null);
   const [uploadedFileName, setUploadedFileName] = useState('');
   const [viewMode, setViewMode] = useState('analysis');
-
-  // In your DocumentAnalysis.js file
-import { jsPDF } from "jspdf";
 
 // Add this function to your component
 const generateDownloadablePDF = () => {
