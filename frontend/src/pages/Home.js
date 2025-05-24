@@ -118,7 +118,7 @@ const Home = () => (
   </h2>
 <div className="lt-steps" style={{
     display: 'flex',
-    justifyContent: 'center',
+    justifyContent: 'right',
     gap: '2rem',
     flexWrap: 'wrap',
     padding: '0 1rem'
