@@ -208,20 +208,24 @@ const Home = () => (
       </div>
     </section>
 
-    <section className="lt-section lt-stats">
-  <div className="lt-stat">
-    <h3>+10</h3>
-    <p>Years In Business</p>
-  </div>
-  <div className="lt-stat">
-    <h3>+20M</h3>
-    <p>Documents Created</p>
-  </div>
-  <div className="lt-stat">
-    <h3>+2M</h3>
-    <p>Registered Customers</p>
-  </div>
-</section>
+    .lt-section.lt-stats {
+  display: flex;
+  justify-content: center;   /* Center the row of stats horizontally */
+  align-items: center;       /* Align vertically if needed */
+  gap: 3rem;
+  padding: 2rem;
+  text-align: center;        /* Center text in each .lt-stat */
+  max-width: 1200px;         /* Prevent stretching too wide */
+  margin: 0 auto;            /* Center the whole block in the page */
+  flex-wrap: wrap;           /* Responsive layout on smaller screens */
+}
+
+.lt-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 
 
     <section className="lt-section lt-testimonials">
