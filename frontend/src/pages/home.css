@@ -223,3 +223,11 @@
   border-radius: 1rem;
   box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
 }
+
+.steps-container {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
