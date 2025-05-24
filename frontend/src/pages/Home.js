@@ -124,54 +124,7 @@ const Home = () => (
     listStyle: 'decimal',
     padding: 0
   }}>
-   /* <li style={{
-      background: 'white',
-      borderRadius: '10px',
-      padding: '1.5rem',
-      minWidth: '220px',
-      boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
-      fontWeight: 'bold',
-      fontSize: '1.1rem'
-    }}>
-      <span style={{ background: '#ffe066', borderRadius: '50%', padding: '6px 14px', marginRight: '8px' }}>1</span>
-      <span style={{ fontWeight: 'bold' }}>Choose Your Legal Form</span>
-      <div style={{ fontWeight: 'normal', color: '#555', marginTop: '0.5rem' }}>
-        Browse <b>160+ legal contracts & documents</b>.
-      </div>
-    </li>
-    <li style={{
-      background: 'white',
-      borderRadius: '10px',
-      padding: '1.5rem',
-      minWidth: '220px',
-      boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
-      fontWeight: 'bold',
-      fontSize: '1.1rem'
-    }}>
-      <span style={{ background: '#ffe066', borderRadius: '50%', padding: '6px 14px', marginRight: '8px' }}>2</span>
-      <span style={{ fontWeight: 'bold' }}>Answer Simple Questions</span>
-      <div style={{ fontWeight: 'normal', color: '#555', marginTop: '0.5rem' }}>
-        Our contract creator customizes your form.
-      </div>
-    </li>
-    <li style={{
-      background: 'white',
-      borderRadius: '10px',
-      padding: '1.5rem',
-      minWidth: '220px',
-      boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
-      fontWeight: 'bold',
-      fontSize: '1.1rem'
-    }}>
-      <span style={{ background: '#ffe066', borderRadius: '50%', padding: '6px 14px', marginRight: '8px' }}>3</span>
-      <span style={{ fontWeight: 'bold' }}>Download & Sign</span>
-      <div style={{ fontWeight: 'normal', color: '#555', marginTop: '0.5rem' }}>
-        Download, print, or <b>e-sign your legal document</b>.
-      </div>
-    </li>
-  </ol>
-</section>*/
-
+  
       <div className="lt-steps">
         <div className="lt-step">
           <span className="lt-step-num">1</span>
@@ -215,11 +168,11 @@ const Home = () => (
       <h3>+2</h3>
       <p>Years In Business</p>
     </div>
-    <div class="stat-box">
+    <div class="stat-box highlight">
       <h3>+20M</h3>
       <p>Documents Created</p>
     </div>
-    <div class="stat-box">
+    <div class="stat-box highlight">
       <h3>+2M</h3>
       <p>Registered Customers</p>
     </div>
@@ -227,7 +180,7 @@ const Home = () => (
       <h3>+3M</h3>
       <p>Analyzed Documents</p>
     </div>
-    <div class="stat-box">
+    <div class="stat-box highlight">
       <h3>+30M</h3>
       <p>Customers helped</p>
     </div>
