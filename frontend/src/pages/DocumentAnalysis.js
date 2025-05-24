@@ -157,7 +157,8 @@ const DocumentAnalysis = () => {
 export default DocumentAnalysis;*/
 import React, { useState } from 'react';
 import { analyzeDocument } from '../api/documents';
-import { highlightRiskText, getRiskStyling } from '../utils/highlighter';
+import { highlightText, getRiskColor } from '../utils/highlighter';
+
 
 const DocumentAnalysis = () => {
   const [analysis, setAnalysis] = useState(null);
