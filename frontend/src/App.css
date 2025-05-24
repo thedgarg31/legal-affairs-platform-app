@@ -1,41 +1,443 @@
-.lt-steps-section {
-  padding: 4rem 1rem;
+/* Modern AI Website Styles */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.lt-steps {
-  display: flex;
-  justify-content: center;
-  gap: 2.5rem;
-  flex-wrap: wrap;
-  max-width: 1100px;
-  margin: 0 auto;
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+    color: #ffffff;
+    min-height: 100vh;
 }
 
-.lt-step {
-  max-width: 280px;
-  text-align: center;
-  padding: 2rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
+.app-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-.lt-step-num {
-  font-size: 2rem;
-  font-weight: bold;
-  display: block;
-  margin-bottom: 1rem;
+.main-content {
+    flex: 1;
+    padding: 0;
 }
 
-.lt-step h3 {
-  font-size: 1.25rem;
-  margin-bottom: 0.5rem;
-  color: #ffffff;
+
+/* Navigation Styles */
+
+.navbar {
+    background: rgba(15, 15, 35, 0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
-.lt-step p {
-  color: #a0a0a0;
-  font-size: 0.95rem;
+.navbar-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-decoration: none;
+}
+
+.navbar-links {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.navbar-link {
+    color: #a0a0a0;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.navbar-link:hover {
+    color: #667eea;
+    transform: translateY(-2px);
+}
+
+.navbar-link::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    transition: width 0.3s ease;
+}
+
+.navbar-link:hover::after {
+    width: 100%;
+}
+
+
+/* Button Styles */
+
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.btn-logout {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-logout:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+}
+
+
+/* Hero Section */
+
+.hero-section {
+    padding: 6rem 2rem;
+    text-align: center;
+    background: radial-gradient(circle at 50% 50%, rgba(102, 126, 234, 0.1) 0%, transparent 50%);
+}
+
+.hero-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #ffffff 0%, #a0a0a0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1.2;
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    color: #a0a0a0;
+    margin-bottom: 3rem;
+    line-height: 1.6;
+}
+
+.hero-actions {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+
+/* Cards */
+
+.card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 2rem;
+    backdrop-filter: blur(20px);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(102, 126, 234, 0.3);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+
+/* Forms */
+
+.form-container {
+    max-width: 400px;
+    margin: 4rem auto;
+    padding: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #a0a0a0;
+    font-weight: 500;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: white;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-input::placeholder {
+    color: #666;
+}
+
+
+/* Footer */
+
+.footer {
+    background: rgba(15, 15, 35, 0.95);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    text-align: center;
+    color: #a0a0a0;
+    margin-top: auto;
+}
+
+
+/* Animations */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+
+/* Responsive */
+
+@media (max-width: 768px) {
+    .navbar-content {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    .navbar-links {
+        gap: 1rem;
+    }
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    .hero-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+
+/* AI-specific elements */
+
+.ai-badge {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.gradient-text {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+
+/* PDF Viewer Styles */
+
+.react-pdf__Page {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+}
+
+.react-pdf__Page__textContent {
+    color: transparent !important;
+}
+
+.react-pdf__Page__annotations {
+    display: none !important;
+}
+
+
+/* Custom PDF highlighting */
+
+.pdf-highlight-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.risk-highlight {
+    position: absolute;
+    background-color: rgba(244, 67, 54, 0.3);
+    border: 1px solid #f44336;
+    border-radius: 2px;
+    pointer-events: none;
+}
+
+
+/* View mode toggle animations */
+
+.view-toggle {
+    transition: all 0.3s ease;
+}
+
+.view-toggle:hover {
+    transform: translateY(-2px);
+}
+
+
+/* PDF Highlighter Styles */
+
+.PdfHighlighter {
+    height: 100vh;
+    width: 100%;
+    position: relative;
+}
+
+.PdfHighlighter .pdfViewer {
+    padding-bottom: 0;
+}
+
+.PdfHighlighter .page {
+    margin-bottom: 1rem;
+}
+
+.Highlight {
+    background: rgba(244, 67, 54, 0.3);
+    border: 1px solid #f44336;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.Highlight:hover {
+    background: rgba(244, 67, 54, 0.5);
+    border-color: #d32f2f;
+}
+
+.Highlight--scrolledTo {
+    background: rgba(255, 193, 7, 0.4);
+    border-color: #ffc107;
+}
+
+
+/* Risk tooltip hover effect */
+
+.risk-tooltip {
+    opacity: 0 !important;
+    transition: opacity 0.3s ease !important;
+}
+
+*:hover>.risk-tooltip {
+    opacity: 1 !important;
+}
+
+
+/* Enhanced highlighting effects */
+
+.risk-highlight-text {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.risk-highlight-text:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(244, 67, 54, 0.3);
+}
+
+
+/* Perfect tooltip hover effect */
+
+.perfect-tooltip {
+    opacity: 0 !important;
+    transition: opacity 0.3s ease !important;
+}
+
+*:hover>.perfect-tooltip {
+    opacity: 1 !important;
+}
+
+
+/* Perfect tooltip hover effect */
+
+.perfect-tooltip {
+    opacity: 0 !important;
+    transition: opacity 0.3s ease !important;
+}
+
+*:hover>.perfect-tooltip {
+    opacity: 1 !important;
 }
