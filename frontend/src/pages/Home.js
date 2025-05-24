@@ -172,7 +172,7 @@ const Home = () => (
   </ol>
 </section>
 
-      <div className="lt-steps">
+     /* <div className="lt-steps">
         <div className="lt-step">
           <span className="lt-step-num">1</span>
           <h3>Choose Your Legal Form</h3>
@@ -189,7 +189,7 @@ const Home = () => (
           <p>Download, print, or e-sign your legal document.</p>
         </div>
       </div>
-    </section>
+    </section>*/
 
     <section className="lt-section lt-experts">
       <h2>Our Legal Experts</h2>
