@@ -103,6 +103,76 @@ const Home = () => (
 
     <section className="lt-section lt-how">
       <h2>How It Works</h2>
+    <section style={{
+  background: '#f7faff',
+  borderRadius: '12px',
+  margin: '2rem 0',
+  padding: '2rem 0'
+}}>
+  <h2 style={{
+    fontWeight: 'bold',
+    fontSize: '2rem',
+    textAlign: 'center',
+    marginBottom: '2rem',
+    color: '#3b82f6'
+  }}>
+    How It Works
+  </h2>
+  <ol style={{
+    display: 'flex',
+    justifyContent: 'center',
+    gap: '2rem',
+    listStyle: 'decimal',
+    padding: 0
+  }}>
+    <li style={{
+      background: 'white',
+      borderRadius: '10px',
+      padding: '1.5rem',
+      minWidth: '220px',
+      boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+      fontWeight: 'bold',
+      fontSize: '1.1rem'
+    }}>
+      <span style={{ background: '#ffe066', borderRadius: '50%', padding: '6px 14px', marginRight: '8px' }}>1</span>
+      <span style={{ fontWeight: 'bold' }}>Choose Your Legal Form</span>
+      <div style={{ fontWeight: 'normal', color: '#555', marginTop: '0.5rem' }}>
+        Browse <b>160+ legal contracts & documents</b>.
+      </div>
+    </li>
+    <li style={{
+      background: 'white',
+      borderRadius: '10px',
+      padding: '1.5rem',
+      minWidth: '220px',
+      boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+      fontWeight: 'bold',
+      fontSize: '1.1rem'
+    }}>
+      <span style={{ background: '#ffe066', borderRadius: '50%', padding: '6px 14px', marginRight: '8px' }}>2</span>
+      <span style={{ fontWeight: 'bold' }}>Answer Simple Questions</span>
+      <div style={{ fontWeight: 'normal', color: '#555', marginTop: '0.5rem' }}>
+        Our contract creator customizes your form.
+      </div>
+    </li>
+    <li style={{
+      background: 'white',
+      borderRadius: '10px',
+      padding: '1.5rem',
+      minWidth: '220px',
+      boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+      fontWeight: 'bold',
+      fontSize: '1.1rem'
+    }}>
+      <span style={{ background: '#ffe066', borderRadius: '50%', padding: '6px 14px', marginRight: '8px' }}>3</span>
+      <span style={{ fontWeight: 'bold' }}>Download & Sign</span>
+      <div style={{ fontWeight: 'normal', color: '#555', marginTop: '0.5rem' }}>
+        Download, print, or <b>e-sign your legal document</b>.
+      </div>
+    </li>
+  </ol>
+</section>
+
       <div className="lt-steps">
         <div className="lt-step">
           <span className="lt-step-num">1</span>
