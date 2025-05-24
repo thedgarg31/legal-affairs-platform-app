@@ -124,7 +124,7 @@ const Home = () => (
     listStyle: 'decimal',
     padding: 0
   }}>
-  
+  </section>
       <div className="lt-steps">
         <div className="lt-step">
           <span className="lt-step-num">1</span>
