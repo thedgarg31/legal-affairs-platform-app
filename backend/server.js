@@ -13,8 +13,14 @@ const connectDB = require('./config/db');
 
 const app = express();
 
+// Allow all origins for development
+app.use(cors({
+  origin: 'http://localhost:3000', // Your React app's URL
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type']
+}));
+
 // Middleware
-app.use(cors());
 app.use(express.json());
 
 // Routes (keep commented for now)
