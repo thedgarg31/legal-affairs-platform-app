@@ -209,19 +209,20 @@ const Home = () => (
     </section>
 
     <section className="lt-section lt-stats">
-      <div className="lt-stat">
-        <h3>+10</h3>
-        <p>Years In Business</p>
-      </div>
-      <div className="lt-stat">
-        <h3>+20M</h3>
-        <p>Documents Created</p>
-      </div>
-      <div className="lt-stat">
-        <h3>+2M</h3>
-        <p>Registered Customers</p>
-      </div>
-    </section>
+  <div className="lt-stat">
+    <h3>+10</h3>
+    <p>Years In Business</p>
+  </div>
+  <div className="lt-stat">
+    <h3>+20M</h3>
+    <p>Documents Created</p>
+  </div>
+  <div className="lt-stat">
+    <h3>+2M</h3>
+    <p>Registered Customers</p>
+  </div>
+</section>
+
 
     <section className="lt-section lt-testimonials">
       <h2>What Our Users Say</h2>
@@ -232,9 +233,7 @@ const Home = () => (
       {/* Add more testimonials as needed */}
     </section>
 
-    <footer className="lt-footer">
-      <p>© {new Date().getFullYear()} Legal AI Platform. All rights reserved.</p>
-    </footer>
+    
   </div>
 );
 
