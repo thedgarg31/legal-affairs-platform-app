@@ -101,8 +101,7 @@ const Home = () => (
       </div>
     </header>
 
-    <section className="lt-section lt-how">
-    <section style={{
+    <section className="lt-section lt-how" style={{
   background: '#f7faff',
   borderRadius: '12px',
   margin: '2rem 0',
@@ -117,32 +116,51 @@ const Home = () => (
   }}>
     How It Works
   </h2>
-  <ol style={{
+
+  <div className="lt-steps" style={{
     display: 'flex',
     justifyContent: 'center',
     gap: '2rem',
-    listStyle: 'decimal',
-    padding: 0
+    flexWrap: 'wrap',
+    padding: '0 1rem'
   }}>
-  </section>
-      <div className="lt-steps">
-        <div className="lt-step">
-          <span className="lt-step-num">1</span>
-          <h3>Choose Your Legal Form</h3>
-          <p>Browse 160+ legal contracts &amp; documents.</p>
-        </div>
-        <div className="lt-step">
-          <span className="lt-step-num">2</span>
-          <h3>Answer Simple Questions</h3>
-          <p>Our contract creator customizes your form.</p>
-        </div>
-        <div className="lt-step">
-          <span className="lt-step-num">3</span>
-          <h3>Download &amp; Sign</h3>
-          <p>Download, print, or e-sign your legal document.</p>
-        </div>
-     
-    </section>
+    <div className="lt-step" style={{ maxWidth: '220px', textAlign: 'center' }}>
+      <span className="lt-step-num" style={{
+        fontSize: '1.5rem',
+        fontWeight: 'bold',
+        color: '#3b82f6',
+        display: 'block',
+        marginBottom: '0.5rem'
+      }}>1</span>
+      <h3>Choose Your Legal Form</h3>
+      <p>Browse 160+ legal contracts &amp; documents.</p>
+    </div>
+
+    <div className="lt-step" style={{ maxWidth: '220px', textAlign: 'center' }}>
+      <span className="lt-step-num" style={{
+        fontSize: '1.5rem',
+        fontWeight: 'bold',
+        color: '#3b82f6',
+        display: 'block',
+        marginBottom: '0.5rem'
+      }}>2</span>
+      <h3>Answer Simple Questions</h3>
+      <p>Our contract creator customizes your form.</p>
+    </div>
+
+    <div className="lt-step" style={{ maxWidth: '220px', textAlign: 'center' }}>
+      <span className="lt-step-num" style={{
+        fontSize: '1.5rem',
+        fontWeight: 'bold',
+        color: '#3b82f6',
+        display: 'block',
+        marginBottom: '0.5rem'
+      }}>3</span>
+      <h3>Download &amp; Sign</h3>
+      <p>Download, print, or e-sign your legal document.</p>
+    </div>
+  </div>
+</section>
 
     <section className="lt-section lt-experts">
       <h2>Our Legal Experts</h2>
