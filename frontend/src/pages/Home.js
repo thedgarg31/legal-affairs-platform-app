@@ -130,7 +130,9 @@ const Home = () => (
         fontWeight: 'bold',
         color: '#3b82f6',
         display: 'block',
-        marginBottom: '0.5rem'
+        marginBottom: '0.5rem',
+        background: 'none',       // Remove background color
+        borderRadius: '0'
       }}>1</span>
       <h3>Choose Your Legal Form</h3>
       <p>Browse 160+ legal contracts &amp; documents.</p>
@@ -143,7 +145,8 @@ const Home = () => (
         color: '#3b82f6',
         display: 'block',
         marginBottom: '0.5rem',
-        background: 'none',
+        background: 'none',       // Remove background color
+        borderRadius: '0'
       }}>2</span>
       <h3>Answer Simple Questions</h3>
       <p>Our contract creator customizes your form.</p>
@@ -155,7 +158,9 @@ const Home = () => (
         fontWeight: 'bold',
         color: '#3b82f6',
         display: 'block',
-        marginBottom: '0.5rem'
+        marginBottom: '0.5rem',
+        background: 'none',       // Remove background color
+        borderRadius: '0'
       }}>3</span>
       <h3>Download &amp; Sign</h3>
       <p>Download, print, or e-sign your legal document.</p>
