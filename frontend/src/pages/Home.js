@@ -117,6 +117,12 @@ const Home = () => (
     How It Works
   </h2>
 
+  <div class="steps-container">
+  <div class="step">...</div>
+  <div class="step">...</div>
+  <div class="step">...</div>
+</div>
+
   <div className="lt-steps" style={{
     display: 'flex',
     justifyContent: 'center',
