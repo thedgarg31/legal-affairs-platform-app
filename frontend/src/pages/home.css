@@ -193,3 +193,33 @@
     max-width: 400px;
   }
 }
+
+.stats-section {
+  background-color: #f9fbfe;
+  padding: 4rem 2rem;
+  display: flex;
+  justify-content: center; /* horizontal center */
+  align-items: center;     /* vertical center */
+}
+
+.stats-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  max-width: 1200px;
+  width: 100%;
+}
+
+.stat-box {
+  text-align: center;
+  min-width: 150px;
+}
+
+.highlight {
+  background-color: #e0f2ff;
+  padding: 1.5rem 1rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
+}
