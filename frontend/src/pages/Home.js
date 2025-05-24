@@ -104,14 +104,14 @@ const Home = () => (
     <section className="lt-section lt-how" style={{
   background: '#f7faff',
   borderRadius: '12px',
-  margin: '2rem 0',
-  padding: '2rem 0'
+  margin: '0.5rem 0',
+  padding: '0.5rem 0'
 }}>
   <h2 style={{
     fontWeight: 'bold',
     fontSize: '2rem',
     textAlign: 'centre',
-    marginBottom: '2rem',
+    marginBottom: '0.5rem',
     color: '#3b82f6'
   }}>
     How It Works
