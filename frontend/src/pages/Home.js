@@ -123,7 +123,78 @@ const Home = () => (
   <div class="step">...</div>
 </div>
 
-  <div className="lt-steps" style={{
+    <section style={{ display: 'flex', justifyContent: 'center' }}>
+  <div
+    className="lt-steps"
+    style={{
+      display: 'flex',
+      justifyContent: 'center',
+      gap: '2rem',
+      flexWrap: 'wrap',
+      padding: '0 1rem',
+      maxWidth: '900px', // optional: control overall width
+    }}
+  >
+    <div className="lt-step" style={{ maxWidth: '220px', textAlign: 'center' }}>
+      <span
+        className="lt-step-num"
+        style={{
+          fontSize: '1.5rem',
+          fontWeight: 'bold',
+          color: '#3b82f6',
+          display: 'block',
+          marginBottom: '0.5rem',
+          background: 'none',
+          borderRadius: '0',
+        }}
+      >
+        1
+      </span>
+      <h3>Choose Your Legal Form</h3>
+      <p>Browse 160+ legal contracts &amp; documents.</p>
+    </div>
+
+    <div className="lt-step" style={{ maxWidth: '220px', textAlign: 'center' }}>
+      <span
+        className="lt-step-num"
+        style={{
+          fontSize: '1.5rem',
+          fontWeight: 'bold',
+          color: '#3b82f6',
+          display: 'block',
+          marginBottom: '0.5rem',
+          background: 'none',
+          borderRadius: '0',
+        }}
+      >
+        2
+      </span>
+      <h3>Answer Simple Questions</h3>
+      <p>Our contract creator customizes your form.</p>
+    </div>
+
+    <div className="lt-step" style={{ maxWidth: '220px', textAlign: 'center' }}>
+      <span
+        className="lt-step-num"
+        style={{
+          fontSize: '1.5rem',
+          fontWeight: 'bold',
+          color: '#3b82f6',
+          display: 'block',
+          marginBottom: '0.5rem',
+          background: 'none',
+          borderRadius: '0',
+        }}
+      >
+        3
+      </span>
+      <h3>Download &amp; Sign</h3>
+      <p>Download, print, or e-sign your legal document.</p>
+    </div>
+  </div>
+</section>
+
+  /*<div className="lt-steps" style={{
     display: 'flex',
     justifyContent: 'center',
     gap: '2rem',
@@ -172,7 +243,7 @@ const Home = () => (
       <p>Download, print, or e-sign your legal document.</p>
     </div>
   </div>
-</section>
+</section>*/
 
     <section className="lt-section lt-experts">
       <h2>Our Legal Experts</h2>
