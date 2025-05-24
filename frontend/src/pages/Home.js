@@ -208,7 +208,7 @@ const Home = () => (
       </div>
     </section>
 
-    <section className="lt-section lt-stats">
+   /* <section className="lt-section lt-stats">
   <div className="lt-stat">
     <h3>+2</h3>
     <p>Years In Business</p>
@@ -237,7 +237,40 @@ const Home = () => (
     <h3>+5</h3>
     <p>Years of Lawyers Registered</p>
   </div>
+</section>*/
+  <section class="stats-section">
+  <div class="stats-container">
+    <div class="stat-box">
+      <h3>+2</h3>
+      <p>Years In Business</p>
+    </div>
+    <div class="stat-box">
+      <h3>+20M</h3>
+      <p>Documents Created</p>
+    </div>
+    <div class="stat-box">
+      <h3>+2M</h3>
+      <p>Registered Customers</p>
+    </div>
+    <div class="stat-box highlight">
+      <h3>+3M</h3>
+      <p>Analyzed Documents</p>
+    </div>
+    <div class="stat-box">
+      <h3>+30M</h3>
+      <p>Customers helped</p>
+    </div>
+    <div class="stat-box">
+      <h3>+10M</h3>
+      <p>Lawyers Registered</p>
+    </div>
+    <div class="stat-box">
+      <h3>+5</h3>
+      <p>Years of Lawyers Registered</p>
+    </div>
+  </div>
 </section>
+
 
 
 
