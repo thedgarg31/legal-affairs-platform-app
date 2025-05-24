@@ -221,7 +221,6 @@ const Home = () => (
     <h3>+2M</h3>
     <p>Registered Customers</p>
   </div>
-  </div>
   <div className="lt-stat">
     <h3>+3M</h3>
     <p>Analyzed Documenst</p>
