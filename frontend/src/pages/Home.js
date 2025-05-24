@@ -143,6 +143,7 @@ const Home = () => (
         color: '#3b82f6',
         display: 'block',
         marginBottom: '0.5rem'
+        background: 'none',
       }}>2</span>
       <h3>Answer Simple Questions</h3>
       <p>Our contract creator customizes your form.</p>
