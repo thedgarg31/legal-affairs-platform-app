@@ -102,7 +102,7 @@ const Home = () => (
     </header>
 
     <section className="lt-section lt-how">
-      <h2>How It Works</h2>
+      /*<h2>How It Works</h2>*/
     <section style={{
   background: '#f7faff',
   borderRadius: '12px',
